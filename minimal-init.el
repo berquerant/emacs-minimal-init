@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.0
+;; Version: 0.1.1
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
@@ -63,10 +63,10 @@
     (display-time) ; display time on modeline
     (run-with-idle-timer 60 t #'display-time)))
 
-(defun minimal-init--setup-interprogram-darwin-cut ()
+(defun minimal-init--setup-interprogram-darwin-paste ()
   (shell-command-to-string "pbpaste"))
 
-(defun minimal-init--setup-interprogram-darwin-paste (text &optional push)
+(defun minimal-init--setup-interprogram-darwin-cut (text &optional push)
   (let ((process-connection-type nil))
     (let ((proc (start-process "pbcopy" "*Messages*" "pbcopy")))
       (process-send-string proc text)
