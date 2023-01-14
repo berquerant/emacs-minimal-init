@@ -78,9 +78,9 @@
 
 (defun minimal-init--setup-interprogram-cut-and-paste ()
   (setq save-interprogram-paste-before-kill t)
-  (cond ((eq system-type "darwin") (minimal-init--setup-interprogram-cut-and-paste-darwin))
+  (cond ((string= system-type "darwin") (minimal-init--setup-interprogram-cut-and-paste-darwin))
         ;; TODO: linux
-        (t (display-warning "minimal-init"
+        (t (display-warning 'minimal-init
                             (format "Failed to setup interprogam cut-and-paste because OS %s not supported"
                                     system-type)))))
 
