@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.1
+;; Version: 0.1.2
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
@@ -175,6 +175,7 @@
         initial-scratch-message nil) ; empty scratch
 
   ;;; etc
+  (global-auto-revert-mode 1) ; revert buffer when the file changes
   (show-paren-mode 1) ; highlight matching parens
   (delete-selection-mode 1) ; overwrite text if region is slelected
   (setq ring-bell-function 'ignore  ; no beep
