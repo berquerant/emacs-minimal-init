@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.2
+;; Version: 0.1.3
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
@@ -159,6 +159,10 @@
   ;;; tab
   (setq-default tab-width 2
                 indent-tabs-mode nil) ; disable tab
+
+  ;;; newline
+  (setq require-final-newline nil
+        next-line-add-newlines nil)
 
   ;;; directory, links
   (setq vc-follow-symlinks t
