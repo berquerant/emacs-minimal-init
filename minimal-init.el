@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.5
+;; Version: 0.1.6
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
@@ -188,6 +188,7 @@
   (setq ring-bell-function 'ignore  ; no beep
         yank-excluded-properties t    ; ignore text properties when paste
         set-mark-command-repeat-pop t ; pop-global-mark like smartrep
+        x-alt-keysym 'meta            ; for X Windows c.f. https://www.emacswiki.org/emacs/MetaKeyProblems#h5o-9
         split-height-threshold 120)
   (minimal-init--setup-interprogram-cut-and-paste)
   (minimal-init--setup-display-time))
