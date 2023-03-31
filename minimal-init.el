@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.4
+;; Version: 0.1.5
 ;; Package-Requires: ((emacs "28.1"))
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
@@ -79,7 +79,7 @@
 (defun minimal-init--setup-interprogram-cut-and-paste ()
   (setq save-interprogram-paste-before-kill t)
   (cond ((string= system-type "darwin") (minimal-init--setup-interprogram-cut-and-paste-darwin))
-        ;; TODO: linux
+        ((string= system-type "gnu/linux") nil)
         (t (display-warning 'minimal-init
                             (format "Failed to setup interprogam cut-and-paste because OS %s not supported"
                                     system-type)))))
