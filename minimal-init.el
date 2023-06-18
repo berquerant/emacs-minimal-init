@@ -3,8 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.6
-;; Package-Requires: ((emacs "28.1"))
+;; Version: 0.1.7
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
 
@@ -55,6 +54,9 @@
 
 (defcustom minimal-init-default-directory "~/"
   "Name of default directory of current buffer.")
+
+(defun minimal-init--default-directory ()
+  (expand-file-name minimal-init-default-directory))
 
 (defun minimal-init--setup-display-time ()
   (when minimal-init-display-time
@@ -166,7 +168,7 @@
 
   ;;; directory, links
   (setq vc-follow-symlinks t
-        default-directory minimal-init-default-directory)
+        default-directory (minimal-init--default-directory))
 
   ;;; disable files
   (setq make-backup-files nil ; no *.~ files
