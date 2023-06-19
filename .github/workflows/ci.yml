@@ -18,6 +18,9 @@ jobs:
         emacs-version:
           - "28.2"
           - "27.2"
+          - "26.3"
+          - "25.3"
+          - "24.5"
           - "24.4"
     steps:
       - name: Checkout
