@@ -126,7 +126,8 @@
 
   ;;; bars
   (menu-bar-mode -1) ; hide menu bar
-  (tool-bar-mode -1) ; hide tool bar
+  (minimal-init--when-functionp tool-bar-mode ; hide tool bar
+                                (tool-bar-mode -1))
   (toggle-scroll-bar -1) ; hide scroll bars
   (minimal-init--when-functionp toggle-horizontal-scroll-bar ; hide horizontal scroll bars
                                 (toggle-horizontal-scroll-bar -1))
