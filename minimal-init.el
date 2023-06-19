@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.1.7
+;; Version: 0.2.0
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
 
@@ -29,6 +29,7 @@
 ;; - Change settings of built-in packages
 ;; - Does not change key bindings explicitly
 ;; - Does not install 3rd party packages
+;; - Protect function calls introduced in versions beyond Emacs version 24.4
 
 ;;; Code:
 
@@ -57,6 +58,12 @@
 
 (defun minimal-init--default-directory ()
   (expand-file-name minimal-init-default-directory))
+
+(defmacro minimal-init--when-functionp (f &rest do-list)
+  "Run DO-LIST when (`functionp' f)."
+  `(if (functionp ',f) (progn ,@do-list)
+     (display-warning 'minimal-init
+                      (format "Function: %s not found" ,(symbol-name f)))))
 
 (defun minimal-init--setup-display-time ()
   (when minimal-init-display-time
@@ -106,8 +113,9 @@
   (set-face-attribute 'default nil :height 100) ; initial font size
 
   ;;; modeline
-  (setcar mode-line-position ; display the number of lines on mode line
-          '(:eval (format "%d" (count-lines (point-max) (point-min)))))
+  (minimal-init--when-functionp count-lines
+                                (setcar mode-line-position ; display the number of lines on mode line
+                                        '(:eval (format "%d" (count-lines (point-max) (point-min))))))
 
   ;;; frame
   (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
@@ -120,10 +128,13 @@
   (menu-bar-mode -1) ; hide menu bar
   (tool-bar-mode -1) ; hide tool bar
   (toggle-scroll-bar -1) ; hide scroll bars
-  (toggle-horizontal-scroll-bar -1) ; hide horizontal scroll bars
+  (minimal-init--when-functionp toggle-horizontal-scroll-bar ; hide horizontal scroll bars
+                                (toggle-horizontal-scroll-bar -1))
 
   ;;; linum
-  (global-display-line-numbers-mode 1) ; show line nunbers
+  (minimal-init--when-functionp global-display-line-numbers-mode ; show line nunbers
+                                (global-display-line-numbers-mode 1))
+  (line-number-mode 1)
   (column-number-mode 1) ; show column number
   ;; no realistic limits to display linum
   (setq line-number-display-limit 100000
@@ -182,7 +193,9 @@
 
   ;;; revert
   (setq revert-without-query '(".*"))
-  (global-auto-revert-mode 1) ; revert buffer when the file changes
+  (minimal-init--when-functionp global-auto-revert-mode ; revert buffer when the file changes
+                                (global-auto-revert-mode 1))
+  (auto-revert-mode 1)
 
   ;;; etc
   (show-paren-mode 1) ; highlight matching parens
@@ -195,10 +208,14 @@
   (minimal-init--setup-interprogram-cut-and-paste)
   (minimal-init--setup-display-time))
 
+(defvar minimal-init-setup-done nil
+  "If non-nil, `minimal-init-setup' succeeeded.")
+
 ;;;###autoload
 (defun minimal-init-setup ()
   "Setup minimal emacs settings."
-  (minimal-init--setup))
+  (minimal-init--setup)
+  (setq minimal-init-setup-done t))
 
 (provide 'minimal-init)
 ;;; minimal-init.el ends here.
