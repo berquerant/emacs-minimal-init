@@ -5,7 +5,8 @@
 (require 'ert)
 (require 'minimal-init)
 
-(defun test-minimal-init-setup ()
+(ert-deftest test-minimal-init-setup ()
+  "`minimal-init-setup-done' should be non-nil after `minimal-init-setup'."
   (minimal-init-setup)
   (should (eq minimal-init-setup-done t)))
 
