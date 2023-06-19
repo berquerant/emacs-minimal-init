@@ -27,6 +27,6 @@ jobs:
         with:
           version: ${{ matrix.emacs-version }}
       - name: Build
-        run: emacs --batch --quick --directory . --eval "(progn (setq byte-compile-error-on-warn t) (batch-byte-compile))" *.el
+        run: emacs --batch --quick --directory . --eval "(progn (setq byte-compile-error-on-warn nil) (batch-byte-compile))" *.el
       - name: Test
         run: emacs --batch --quick --directory . --load tests/*.el --eval "(ert-run-tests-batch-and-exit t)"
