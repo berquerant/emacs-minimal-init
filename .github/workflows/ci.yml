@@ -1,0 +1,32 @@
+name: CI
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    timeout-minutes: 1
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        emacs-version:
+          - "28.2"
+          - "27.2"
+          - "24.4"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup Emacs ${{ matrix.emacs-version }}
+        uses: purcell/setup-emacs@master
+        with:
+          version: ${{ matrix.emacs-version }}
+      - name: Build
+        run: emacs --batch --quick --directory . --eval "(progn (setq byte-compile-error-on-warn t) (batch-byte-compile))" *.el
+      - name: Test
+        run: emacs --batch --quick --directory . --load tests/*.el --eval "(ert-run-tests-batch-and-exit t)"
