@@ -59,11 +59,15 @@
 (defun minimal-init--default-directory ()
   (expand-file-name minimal-init-default-directory))
 
-(defmacro minimal-init--when-functionp (f &rest do-list)
-  "Run DO-LIST when (`functionp' f)."
-  `(if (functionp ',f) (progn ,@do-list)
-     (display-warning 'minimal-init
-                      (format "Function: %s not found" ,(symbol-name f)))))
+(defun minimal-init--warning (msg)
+  (display-warning 'minimal-init msg))
+
+(defmacro minimal-init--protect-function-call (f &rest do-list)
+  "Run DO-LIST when (`functionp' f) and display warning if an error occurs."
+  `(if (functionp ',f) (condition-case err
+                           (progn ,@do-list)
+                         (error (minimal-init--warning (format "Function: %s %s" (symbol-name ',f) err))))
+     (minimal-init--warning (format "Function: %s not found" (symbol-name ',f)))))
 
 (defun minimal-init--setup-display-time ()
   (when minimal-init-display-time
@@ -89,9 +93,7 @@
   (setq save-interprogram-paste-before-kill t)
   (cond ((string= system-type "darwin") (minimal-init--setup-interprogram-cut-and-paste-darwin))
         ((string= system-type "gnu/linux") nil)
-        (t (display-warning 'minimal-init
-                            (format "Failed to setup interprogam cut-and-paste because OS %s not supported"
-                                    system-type)))))
+        (t (minimal-init--warning (format "Failed to setup interprogam cut-and-paste because OS %s not supported" system-type)))))
 
 (defun minimal-init--setup()
   ;;; language
@@ -113,9 +115,9 @@
   (set-face-attribute 'default nil :height 100) ; initial font size
 
   ;;; modeline
-  (minimal-init--when-functionp count-lines
-                                (setcar mode-line-position ; display the number of lines on mode line
-                                        '(:eval (format "%d" (count-lines (point-max) (point-min))))))
+  (minimal-init--protect-function-call count-lines
+                                       (setcar mode-line-position ; display the number of lines on mode line
+                                               '(:eval (format "%d" (count-lines (point-max) (point-min))))))
 
   ;;; frame
   (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
@@ -126,16 +128,16 @@
 
   ;;; bars
   (menu-bar-mode -1) ; hide menu bar
-  (minimal-init--when-functionp tool-bar-mode ; hide tool bar
-                                (tool-bar-mode -1))
-  (minimal-init--when-functionp toggle-scroll-bar ; hide scroll bars
-                                (toggle-scroll-bar -1))
-  (minimal-init--when-functionp toggle-horizontal-scroll-bar ; hide horizontal scroll bars
-                                (toggle-horizontal-scroll-bar -1))
+  (minimal-init--protect-function-call tool-bar-mode ; hide tool bar
+                                       (tool-bar-mode -1))
+  (minimal-init--protect-function-call toggle-scroll-bar ; hide scroll bars
+                                       (toggle-scroll-bar -1))
+  (minimal-init--protect-function-call toggle-horizontal-scroll-bar ; hide horizontal scroll bars
+                                       (toggle-horizontal-scroll-bar -1))
 
   ;;; linum
-  (minimal-init--when-functionp global-display-line-numbers-mode ; show line nunbers
-                                (global-display-line-numbers-mode 1))
+  (minimal-init--protect-function-call global-display-line-numbers-mode ; show line nunbers
+                                       (global-display-line-numbers-mode 1))
   (line-number-mode 1)
   (column-number-mode 1) ; show column number
   ;; no realistic limits to display linum
@@ -195,8 +197,8 @@
 
   ;;; revert
   (setq revert-without-query '(".*"))
-  (minimal-init--when-functionp global-auto-revert-mode ; revert buffer when the file changes
-                                (global-auto-revert-mode 1))
+  (minimal-init--protect-function-call global-auto-revert-mode ; revert buffer when the file changes
+                                       (global-auto-revert-mode 1))
   (auto-revert-mode 1)
 
   ;;; etc
