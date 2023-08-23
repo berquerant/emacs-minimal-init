@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.2.1
+;; Version: 0.2.2
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init-el
 
@@ -196,7 +196,8 @@
         initial-scratch-message nil) ; empty scratch
 
   ;;; revert
-  (setq revert-without-query '(".*"))
+  (setq revert-without-query '(".*")
+        auto-revert-check-vc-info t)
   (minimal-init--protect-function-call global-auto-revert-mode ; revert buffer when the file changes
                                        (global-auto-revert-mode 1))
   (auto-revert-mode 1)
