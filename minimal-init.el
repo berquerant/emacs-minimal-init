@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.2.2
+;; Version: 0.2.3
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init
 
@@ -39,28 +39,39 @@
   :group 'minimal-init)
 
 (defcustom minimal-init-language-name "Japanese"
-  "Language name to be set.")
+  "Language name to be set."
+  :type 'string)
 
 (defcustom minimal-init-coding-system 'utf-8
-  "Coding system to be set.")
+  "Coding system to be set."
+  :type 'symbol)
 
 (defcustom minimal-init-default-major-mode 'text-mode
-  "Default major mode.")
+  "Default major mode."
+  :type 'symbol)
 
 (defcustom minimal-init-gc-threshold (* 100 (expt 2 20)) ; 100 MiB
-  "Number of bytes to start gc.")
+  "Number of bytes to start gc."
+  :type 'integer)
 
 (defcustom minimal-init-display-time t
-  "If t then `display-time'.")
+  "If t then `display-time'."
+  :type 'boolean)
 
 (defcustom minimal-init-default-directory "~/"
-  "Name of default directory of current buffer.")
+  "Name of default directory of current buffer."
+  :type 'string)
+
+(defcustom minimal-init-quiet nil
+  "If t, suppress warnings."
+  :type 'boolean)
 
 (defun minimal-init--default-directory ()
   (expand-file-name minimal-init-default-directory))
 
 (defun minimal-init--warning (msg)
-  (display-warning 'minimal-init msg))
+  (unless minimal-init-quiet
+    (display-warning 'minimal-init msg)))
 
 (defmacro minimal-init--protect-function-call (f &rest do-list)
   "Run DO-LIST when (`functionp' f) and display warning if an error occurs."
