@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.2.3
+;; Version: 0.2.4
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init
 
@@ -66,6 +66,10 @@
   "If t, suppress warnings."
   :type 'boolean)
 
+(defcustom minimal-init-font-size 120
+  "Font size."
+  :type 'integer)
+
 (defun minimal-init--default-directory ()
   (expand-file-name minimal-init-default-directory))
 
@@ -123,7 +127,7 @@
         locale-coding-system minimal-init-coding-system)
 
   ;;; font
-  (set-face-attribute 'default nil :height 100) ; initial font size
+  (set-face-attribute 'default nil :height minimal-init-font-size) ; initial font size
 
   ;;; modeline
   (minimal-init--protect-function-call count-lines
