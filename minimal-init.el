@@ -257,7 +257,8 @@ Format is: (A%,B/C,D/E,F/G)"
   (auto-revert-mode 1)
 
   ;;; etc
-  (repeat-mode t)
+  (minimal-init--protect-function-call repeat-mode
+                                       (repeat-mode t))
   (show-paren-mode 1) ; highlight matching parens
   (delete-selection-mode 1) ; overwrite text if region is slelected
   (setq ring-bell-function 'ignore  ; no beep
