@@ -110,6 +110,45 @@
         ((string= system-type "gnu/linux") nil)
         (t (minimal-init--warning (format "Failed to setup interprogam cut-and-paste because OS %s not supported" system-type)))))
 
+(defun minimal-init--calc-mode-line-position ()
+    "Calculate a string for `mode-line-position'.
+
+A: cursor position percentage
+B: line number
+C: max line number
+D: column number
+E: max column number
+F: current chars
+G: max chars
+
+Format is: (A%,B/C,D/E,F/G)"
+    (let* ((pp (point))
+           (pmin (point-min))
+           (pmax (point-max))
+           (phead (progn (move-beginning-of-line 1)
+                         (point)))
+           (ptail (progn (move-end-of-line 1)
+                         (point)))
+           ;; pp: current cursor
+           ;; pmin: beginning of buffer
+           ;; pmax: end of buffer
+           ;; phead: beginning of line
+           ;; ptail: end of line
+           (max-lines (count-lines pmax pmin))
+           (current-lines (count-lines pp pmin))
+           (max-chars pmax)
+           (current-chars pp)
+           (max-line-chars (- ptail phead))
+           (current-line-chars (- pp phead))
+           (pos-pct (* 100 (/ (float current-chars) max-chars))))
+
+      (goto-char pp) ; return cursor to the original pos
+      (format "(%d%%%%,%d/%d,%d/%d,%d/%d)"
+              (round pos-pct)
+              current-lines max-lines
+              current-line-chars max-line-chars
+              current-chars max-chars)))
+
 (defun minimal-init--setup()
   ;;; language
   (set-language-environment minimal-init-language-name)
@@ -130,9 +169,8 @@
   (set-face-attribute 'default nil :height minimal-init-font-size) ; initial font size
 
   ;;; modeline
-  (minimal-init--protect-function-call count-lines
-                                       (setcar mode-line-position ; display the number of lines on mode line
-                                               '(:eval (format "%d" (count-lines (point-max) (point-min))))))
+  (setcar mode-line-position
+          '(:eval (minimal-init--calc-mode-line-position)))
 
   ;;; frame
   (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
