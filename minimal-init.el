@@ -218,6 +218,7 @@
   (auto-revert-mode 1)
 
   ;;; etc
+  (repeat-mode t)
   (show-paren-mode 1) ; highlight matching parens
   (delete-selection-mode 1) ; overwrite text if region is slelected
   (setq ring-bell-function 'ignore  ; no beep
