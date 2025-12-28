@@ -169,8 +169,9 @@ Format is: (A%,B/C,D/E,F/G)"
   (set-face-attribute 'default nil :height minimal-init-font-size) ; initial font size
 
   ;;; modeline
-  (setcar mode-line-position
-          '(:eval (minimal-init--calc-mode-line-position)))
+  (minimal-init--protect-function-call count-lines
+                                       (setcar mode-line-position
+                                               '(:eval (minimal-init--calc-mode-line-position))))
 
   ;;; frame
   (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
