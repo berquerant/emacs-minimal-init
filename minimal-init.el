@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.2.4
+;; Version: 0.2.5
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init
 
