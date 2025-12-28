@@ -222,6 +222,7 @@
   (show-paren-mode 1) ; highlight matching parens
   (delete-selection-mode 1) ; overwrite text if region is slelected
   (setq ring-bell-function 'ignore  ; no beep
+        inhibit-default-init t        ; ignore default.el
         yank-excluded-properties t    ; ignore text properties when paste
         set-mark-command-repeat-pop t ; pop-global-mark like smartrep
         x-alt-keysym 'meta            ; for X Windows c.f. https://www.emacswiki.org/emacs/MetaKeyProblems#h5o-9
