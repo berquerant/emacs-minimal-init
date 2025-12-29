@@ -2,6 +2,10 @@
 
 My minimal configuration of Emacs.
 
+- Modifies built-in package settings.
+- No changes to keybindings.
+- No third-party packages installed.
+
 # Usage
 
 ``` emacs-lisp
