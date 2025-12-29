@@ -1,4 +1,4 @@
-# Minimal init
+# emacs-minimal-init
 
 My minimal configuration of Emacs.
 
