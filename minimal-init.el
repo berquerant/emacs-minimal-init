@@ -179,6 +179,8 @@ Format is: (A%,B/C,D/E,F/G)"
   ;;; default mode
   (setq-default major-mode minimal-init-default-major-mode) ; instead of fundamental-mode
   (setq initial-major-mode minimal-init-default-major-mode)
+  (with-current-buffer (get-buffer-create "*scratch*")
+    (funcall initial-major-mode))
 
   ;;; bars
   (menu-bar-mode -1) ; hide menu bar
