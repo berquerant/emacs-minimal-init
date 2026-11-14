@@ -3,7 +3,7 @@
 ;; Author: berquerant
 ;; Maintainer: berquerant
 ;; Created: 14 Jan 2023
-;; Version: 0.2.6
+;; Version: 0.2.7
 ;; Keywords: init
 ;; URL: https://github.com/berquerant/emacs-minimal-init
 
@@ -262,13 +262,16 @@ Format is: (A%,B/C,D/E,F/G)"
   (minimal-init--protect-function-call repeat-mode
                                        (repeat-mode t))
   (show-paren-mode 1) ; highlight matching parens
+  (minimal-init--protect-function-call electric-pair-mode
+                                       (electric-pair-mode 1)) ; auto pair brackets
   (delete-selection-mode 1) ; overwrite text if region is slelected
   (setq ring-bell-function 'ignore  ; no beep
         inhibit-default-init t        ; ignore default.el
         yank-excluded-properties t    ; ignore text properties when paste
         set-mark-command-repeat-pop t ; pop-global-mark like smartrep
         x-alt-keysym 'meta            ; for X Windows c.f. https://www.emacswiki.org/emacs/MetaKeyProblems#h5o-9
-        split-height-threshold 120)
+        split-height-threshold 120
+        isearch-lazy-count t)         ; display isearch hit count
   (minimal-init--setup-interprogram-cut-and-paste)
   (minimal-init--setup-display-time))
 
