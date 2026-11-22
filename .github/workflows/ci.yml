@@ -41,3 +41,8 @@ jobs:
           touch /home/runner/.emacs.d/history
       - name: Test
         run: emacs --batch --quick --directory . --load tests/*.el --eval "(ert-run-tests-batch-and-exit t)"
+
+  actions-lock-verify:
+    permissions:
+      contents: read
+    uses: berquerant/reusable-workflows/.github/workflows/actions-lock-verify.yml@v0.1.0
